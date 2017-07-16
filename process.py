@@ -5,12 +5,20 @@ in between the tweet text, like this: 'These #bloody #airtel wale are so conside
 This script would change this tweet to -- 'These wale are so considerable'. Plus all the @tags are
 removed and only those tweets are taken into account which do not start with '@' and doesn't
 contain links 'http'.
-Script returns the list of cleaned tweets.
+
+
+
+Script returns numpy array of cleaned tweets.
 """
-import os
-os.chdir('C:/Users/Dell/Desktop')
+
+
+
+#import os
+#os.chdir('C:/Users/Dell/Desktop/tweets_data')
+import numpy as np
 
 import re
+import string
 
 #alist = []
 
@@ -22,6 +30,7 @@ def preprocessing(txt_fileobj):
     atag = re.compile(r'@\w+\s?', re.I)  #for friend tags
     #for line in file_object:
     for line in txt_fileobj:
+        #print line 
         if 'http' not in line and len(line)>0 and line[0]!='@':
          
             line = hashtags.sub('', line)
@@ -29,11 +38,26 @@ def preprocessing(txt_fileobj):
             line =  hashtags.sub('', line)
             line = atag.sub('',line)
             line = re.sub(r'RT :','', line)
+            line = line.translate(string.maketrans("",""),string.punctuation)  #remove all sort of punctuation from line
             alist.append(line)
+            
+    alist = list(set(alist))
+    alist = np.array(alist)
     return alist
 
-with open('process.txt', 'r+') as f:
-        alist = preprocessing(f)
+### for file containing sarcastic tweets   
+
+with open('positive.txt', 'r+') as f:
+        pdata = preprocessing(f)
+### for file containing regular tweets
+
+##with open('regular.txt', 'r+') as f:
+##        ndata = preprocessing(f)
+
+np.save('sarcasmproc', pdata)
+#np.save('regularproc',ndata)
+
         
     
+
 
