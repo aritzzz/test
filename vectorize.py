@@ -1,24 +1,19 @@
-#import alist from preproc.py. It returns list)
-#for every entry in the list, remove punctution, perform tokenization
-#and stemming to get words/stemmed data, also remove stop words(optional)
-##"""
-##first use bag of words approach, tfidf vectorizer to get features.
-##
-##"""
 
-from preproc import alist
+
+"""
+This script does feature extraction over tweet data. The function features is defined which returns feature dictionary, and for now only unigrams and bigrams feature
+have been added using another function gram_feature.
+"""
+
+
+
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
 import string
 
 
-    
-##function postproc take two lists, an empty list aalist and alist(the one returned from preproc.py)
-##and remove punctuation, tokenizes and after stemming append the strin for every entry in list alist
-##to aalist and returns aalist.
+
 
 def features(sentence):
     features = {}
@@ -29,10 +24,8 @@ def features(sentence):
 
 
 def gram_feature(features, sentence):
-    #for strin in alist:
-        #words = ""
-        strp = sentence.translate(string.maketrans("",""),string.punctuation)
-        tokens = word_tokenize(strp)
+        #words = " "
+        tokens = word_tokenize(sentence)
         stemmer = SnowballStemmer("english")
         stem = [stemmer.stem(token.lower()) for token in tokens]
         bigrams = nltk.bigrams(stem)
@@ -42,6 +35,7 @@ def gram_feature(features, sentence):
         #print words
         for t in grams:
             features['contains(%s)' %t] = 1.0
+
         #aalist.append(words)
 
     #return aalist
@@ -65,22 +59,22 @@ def gram_feature(features, sentence):
 
 
 
-
-def main():
-    #aalist = []
-    #aalist = postproc(alist,aalist)
-    #print aalist
-    #X = vecto(aalist)
-    #print X
-    for strin in alist:
-        z = features(strin)
-        print z
-        
-        
-        
-
-if __name__ == '__main__':
-    main()
+##
+##def main():
+##    #aalist = []
+##    #aalist = postproc(alist,aalist)
+##    #print aalist
+##    #X = vecto(aalist)
+##    #print X
+##    for strin in alist:
+##        z = features(strin)
+##        print z
+##        
+##        
+##        
+##
+##if __name__ == '__main__':
+##    main()
 
 
 
