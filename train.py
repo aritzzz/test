@@ -1,11 +1,15 @@
 """
-the tweets are saved in sarcasmproc file, load that file and for every entry in that
-do feature extraction. The script would return the feature dictionary for every tweet
-and the aim of this script is get features for the entire dataset.
+sarcasmproc.npy file loaded in this script contains clean tweets, stemmed as well. This script takes every tweet and append it to featuresets 
+list. Also label( 1 for sarcastic tweet and 0 for regular tweet) is appended to labelset for every tweet. The featuresets list is then 
+represented as Vector Space Model using sklearn.feature_extraction.text CountVectorizer class whose parameters ngram_range
+and stop_words do the necessary work.
 """
 
 import numpy as np
-import vectorize
+#import vectorize
+from sklearn.feature_extraction.text import CountVectorizer
+
+
 
 print 'loading data'
 
@@ -15,12 +19,19 @@ pos_data = np.load('sarcasmproc.npy')
 print 'no. of sarcastic tweets :', len(pos_data)
 #print no.of regular tweets
 
-cls_set = ['Regular', 'Sarcastic']
+
 featuresets = []
+labelset = []
 
 for tweet in pos_data:
-    featuresets.append((vectorize.features(tweet),cls_set[1]))
+    featuresets.append(tweet)
+    labelset.append(1)
 
 featuresets = np.array(featuresets)
+labelset = np.array(labelset)
 
-print featuresets
+#print featuresets
+#print labelset
+
+vectorizer = CountVectorizer(ngram_range=(1,2),stop_words = 'english', analyzer = 'word')
+X = vectorizer.fit_transform(featuresets)
