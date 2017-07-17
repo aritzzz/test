@@ -33,5 +33,5 @@ labelset = np.array(labelset)
 #print featuresets
 #print labelset
 
-vectorizer = CountVectorizer(ngram_range=(1,2),stop_words = 'english', analyzer = 'word')
+vectorizer = CountVectorizer(ngram_range=(1,2), stop_words = 'english', analyzer = 'word')
 X = vectorizer.fit_transform(featuresets)
